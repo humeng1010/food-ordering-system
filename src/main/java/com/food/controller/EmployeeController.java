@@ -1,14 +1,12 @@
 package com.food.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.food.entity.Employee;
 import com.food.service.EmployeeService;
 import com.food.utils.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,5 +20,15 @@ public class EmployeeController {
     @PostMapping("/login")
     public Result<Employee> login(HttpServletRequest request,@RequestBody Employee employee){
         return employeeService.login(request,employee);
+    }
+
+    @PostMapping("/logout")
+    public Result<String> logout(HttpServletRequest request){
+        return employeeService.logout(request);
+    }
+
+    @GetMapping("/page")
+    public Result<IPage<Employee>> page(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize){
+        return employeeService.getEmployeeByPage(page,pageSize);
     }
 }

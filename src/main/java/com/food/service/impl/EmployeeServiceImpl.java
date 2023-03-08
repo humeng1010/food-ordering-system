@@ -1,6 +1,8 @@
 package com.food.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.food.entity.Employee;
 import com.food.mapper.EmployeeMapper;
@@ -12,6 +14,7 @@ import org.springframework.util.DigestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -43,5 +46,21 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         session.setAttribute("employee",obj);
 
         return Result.success(obj,"登陆成功");
+    }
+
+    @Override
+    public Result<String> logout(HttpServletRequest request) {
+        request.getSession().removeAttribute("employee");
+        return Result.success("退出成功");
+    }
+
+    @Override
+    public Result<IPage<Employee>> getEmployeeByPage(Integer page, Integer pageSize) {
+        IPage<Employee> iPage = new Page<>(page,pageSize);
+
+        IPage<Employee> employeeIPage = this.page(iPage);
+
+//        List<Employee> employees = employeeIPage.getRecords();
+        return Result.success(employeeIPage);
     }
 }
