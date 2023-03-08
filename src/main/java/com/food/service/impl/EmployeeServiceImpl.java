@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.food.entity.Employee;
+import com.food.exception.DuplicateException;
 import com.food.mapper.EmployeeMapper;
 import com.food.service.EmployeeService;
 import com.food.utils.Result;
@@ -14,7 +15,6 @@ import org.springframework.util.DigestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -43,7 +43,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         }
 
         HttpSession session = request.getSession();
-        session.setAttribute("employee",obj);
+        session.setAttribute("employee",obj.getId());
 
         return Result.success(obj,"登陆成功");
     }
@@ -60,7 +60,29 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
 
         IPage<Employee> employeeIPage = this.page(iPage);
 
-//        List<Employee> employees = employeeIPage.getRecords();
         return Result.success(employeeIPage);
+    }
+
+    @Override
+    public Result<String> saveEmployee(HttpServletRequest request,Employee employee) {
+        LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Employee::getUsername,employee.getUsername());
+        Employee emp = this.getOne(queryWrapper);
+        if (!Objects.isNull(emp)){
+            throw new DuplicateException("账号重复");
+        }
+//        设置初始密码
+        employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
+//        使用mp进行自动填充
+//        employee.setCreateTime(LocalDateTime.now());
+//        employee.setUpdateTime(LocalDateTime.now());
+        Long empId = (Long) request.getSession().getAttribute("employee");
+        employee.setCreateUser(empId);
+        employee.setUpdateUser(empId);
+        boolean flag = this.save(employee);
+        if (!flag){
+            return Result.fail("添加失败");
+        }
+        return Result.success("添加成功");
     }
 }

@@ -14,4 +14,6 @@ public interface EmployeeService extends IService<Employee> {
     Result<String> logout(HttpServletRequest request);
 
     Result<IPage<Employee>> getEmployeeByPage(Integer page, Integer pageSize);
+
+    Result<String> saveEmployee(HttpServletRequest request, Employee employee);
 }

@@ -5,6 +5,7 @@ import com.food.entity.Employee;
 import com.food.utils.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,9 +25,9 @@ public class LoginInterceptor implements HandlerInterceptor {
         log.info("拦截到的请求:{}",requestURI);
         HttpSession session = request.getSession();
 
-        Employee employee = (Employee) session.getAttribute("employee");
+        Object empId = session.getAttribute("employee");
 
-        if (Objects.isNull(employee)){
+        if (Objects.isNull(empId)){
             //如果没有该session,则需要登陆
 //            response.sendRedirect("/backend/page/login/login.html");
 //            给页面响应没有登陆信息,前端页面自动跳转到登录页
