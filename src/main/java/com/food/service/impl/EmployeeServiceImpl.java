@@ -40,7 +40,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
 
         if (obj.getStatus() == 0){
             //该用户被禁用
-            return Result.fail("该用户被禁用");
+            return Result.fail("您已被禁用");
         }
 
         HttpSession session = request.getSession();
@@ -65,12 +65,6 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         }
 //        设置初始密码
         employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
-//        使用mp进行自动填充
-//        employee.setCreateTime(LocalDateTime.now());
-//        employee.setUpdateTime(LocalDateTime.now());
-        Long empId = (Long) request.getSession().getAttribute("employee");
-        employee.setCreateUser(empId);
-        employee.setUpdateUser(empId);
         boolean flag = this.save(employee);
         if (!flag){
             return Result.fail("添加失败");
@@ -80,10 +74,10 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
 
     /**
      * 条件分页查询
-     * @param page
-     * @param pageSize
-     * @param name
-     * @return
+     * @param page 第几页
+     * @param pageSize 当前页大小
+     * @param name 查询条件
+     * @return 分页查询结果
      */
     @Override
     public Result<IPage<Employee>> getEmployeeByPageCondition(Integer page, Integer pageSize, String name) {
@@ -92,5 +86,20 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         queryWrapper.like(StringUtils.hasText(name), Employee::getName, name);
         IPage<Employee> employeeIPage = this.page(iPage,queryWrapper);
         return Result.success(employeeIPage);
+    }
+
+    @Override
+    public Result<String> updateEmployeeById(Employee employee,HttpServletRequest request) {
+        boolean b = this.updateById(employee);
+        if (b){
+            return Result.success("ok");
+        }
+        return Result.fail("修改失败");
+    }
+
+    @Override
+    public Result<Employee> getEmployeeById(Long id) {
+        Employee employee = this.getById(id);
+        return Result.success(employee);
     }
 }

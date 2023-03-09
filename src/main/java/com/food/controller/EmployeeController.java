@@ -40,4 +40,14 @@ public class EmployeeController {
             @RequestParam(value = "name",required = false) String name){
         return employeeService.getEmployeeByPageCondition(page,pageSize,name);
     }
+
+    @PutMapping
+    public Result<String> updateEmployee(HttpServletRequest request,@RequestBody Employee employee){
+        return employeeService.updateEmployeeById(employee,request);
+    }
+
+    @GetMapping("/{id}")
+    public Result<Employee> getEmployeeById(@PathVariable Long id){
+        return employeeService.getEmployeeById(id);
+    }
 }

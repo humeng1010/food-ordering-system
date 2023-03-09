@@ -14,6 +14,8 @@ public class Employee implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    //json转换格式
+//    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
 
     private String username;
@@ -46,8 +48,10 @@ public class Employee implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
+    @TableField(fill = FieldFill.INSERT)
     private Long createUser;
 
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updateUser;
 
 }
