@@ -141,7 +141,7 @@
             await getMemberList(params).then(res => {
               if (String(res.code) === '1') {
                 this.tableData = res.data.records || []
-                this.counts = parseInt(res.data.total)
+                this.counts = res.data.total
               }
             }).catch(err => {
               this.$message.error('请求出错了：' + err)
@@ -176,7 +176,7 @@
               'cancelButtonText': '取消',
               'type': 'warning'
               }).then(() => {
-              enableOrDisableEmployee({ 'id': this.id, 'status': !parseInt(this.status) ? 1 : 0 }).then(res => {
+              enableOrDisableEmployee({ 'id': this.id, 'status': !this.status ? 1 : 0 }).then(res => {
                 console.log('enableOrDisableEmployee',res)
                 if (String(res.code) === '1') {
                   this.$message.success('账号状态更改成功！')
