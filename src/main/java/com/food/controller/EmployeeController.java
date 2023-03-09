@@ -32,8 +32,12 @@ public class EmployeeController {
         return employeeService.saveEmployee(request,employee);
     }
 
+
     @GetMapping("/page")
-    public Result<IPage<Employee>> page(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize){
-        return employeeService.getEmployeeByPage(page,pageSize);
+    public Result<IPage<Employee>> pageByCondition(
+            @RequestParam("page") Integer page,
+            @RequestParam("pageSize") Integer pageSize,
+            @RequestParam(value = "name",required = false) String name){
+        return employeeService.getEmployeeByPageCondition(page,pageSize,name);
     }
 }

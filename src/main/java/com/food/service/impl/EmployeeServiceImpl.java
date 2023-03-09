@@ -55,15 +55,6 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     }
 
     @Override
-    public Result<IPage<Employee>> getEmployeeByPage(Integer page, Integer pageSize) {
-        IPage<Employee> iPage = new Page<>(page,pageSize);
-
-        IPage<Employee> employeeIPage = this.page(iPage);
-
-        return Result.success(employeeIPage);
-    }
-
-    @Override
     public Result<String> saveEmployee(HttpServletRequest request,Employee employee) {
         LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Employee::getUsername,employee.getUsername());
@@ -84,5 +75,26 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
             return Result.fail("添加失败");
         }
         return Result.success("添加成功");
+    }
+
+    /**
+     * 条件分页查询
+     * @param page
+     * @param pageSize
+     * @param name
+     * @return
+     */
+    @Override
+    public Result<IPage<Employee>> getEmployeeByPageCondition(Integer page, Integer pageSize, String name) {
+        IPage<Employee> iPage = new Page<>(page,pageSize);
+        if (Objects.isNull(name) || name.equals("")){
+//            如果没有条件
+            IPage<Employee> employeeIPage = this.page(iPage);
+            return Result.success(employeeIPage);
+        }
+        LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(Employee::getName,name);
+        IPage<Employee> employeeIPage = this.page(iPage,queryWrapper);
+        return Result.success(employeeIPage);
     }
 }
