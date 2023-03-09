@@ -12,6 +12,7 @@ import com.food.utils.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -87,13 +88,8 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     @Override
     public Result<IPage<Employee>> getEmployeeByPageCondition(Integer page, Integer pageSize, String name) {
         IPage<Employee> iPage = new Page<>(page,pageSize);
-        if (Objects.isNull(name) || name.equals("")){
-//            如果没有条件
-            IPage<Employee> employeeIPage = this.page(iPage);
-            return Result.success(employeeIPage);
-        }
         LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.like(Employee::getName,name);
+        queryWrapper.like(StringUtils.hasText(name), Employee::getName, name);
         IPage<Employee> employeeIPage = this.page(iPage,queryWrapper);
         return Result.success(employeeIPage);
     }
