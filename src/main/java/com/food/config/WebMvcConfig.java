@@ -4,6 +4,7 @@ import com.alibaba.fastjson.serializer.ValueFilter;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.food.interceptor.LoginInterceptor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,9 +13,12 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Objects;
 
 @Configuration
+@Slf4j
 public class WebMvcConfig implements WebMvcConfigurer {
     /**
      * 设置静态资源映射
@@ -48,7 +52,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     static class LongToStringValueFilter implements ValueFilter {
         @Override
         public Object process(Object object, String name, Object value) {
-            if (value instanceof Long) {
+            if (value instanceof Long && !Objects.equals(name,"total")) {
                 return String.valueOf(value);
             }
             return value;
