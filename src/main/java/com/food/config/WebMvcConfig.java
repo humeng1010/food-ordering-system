@@ -37,7 +37,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/backend/**",
                         "/error",
                         "/employee/login",
-                        "/employee/logout");
+                        "/employee/logout",
+                        "/favicon.ico",
+                        "/common/**");
     }
 
     /**

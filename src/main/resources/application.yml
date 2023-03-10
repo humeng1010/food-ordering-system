@@ -8,6 +8,10 @@ spring:
       url: jdbc:mysql://localhost:3306/reggie?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
       username: root
       password: 12345678
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 10240MB
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
@@ -15,4 +19,10 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: assign_id
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
   mapper-locations: classpath*:/mapper/**/*.xml
+
+upload-img:
+  path: "/Users/humeng/img/"

@@ -141,7 +141,7 @@
             await getMemberList(params).then(res => {
               if (String(res.code) === '1') {
                 this.tableData = res.data.records || []
-                this.counts = res.data.total
+                this.counts = res.data.total*1
               }
             }).catch(err => {
               this.$message.error('请求出错了：' + err)
