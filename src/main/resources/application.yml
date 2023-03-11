@@ -12,6 +12,8 @@ spring:
     multipart:
       max-file-size: 1024MB
       max-request-size: 10240MB
+  main:
+    allow-circular-references: true # 开启bean的循环引用
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true

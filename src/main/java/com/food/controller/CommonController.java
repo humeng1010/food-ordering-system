@@ -36,7 +36,7 @@ public class CommonController {
 
             String uuid = UUID.randomUUID().toString();
             String originalFilename = file.getOriginalFilename();
-            log.info("文件的原始名称:{}",originalFilename);
+
             assert originalFilename != null;
             // 获取文件后缀 带 .
             String substring = originalFilename.substring(originalFilename.lastIndexOf("."));

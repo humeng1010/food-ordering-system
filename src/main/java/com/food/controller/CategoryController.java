@@ -7,6 +7,7 @@ import com.food.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 @RestController
@@ -36,4 +37,8 @@ public class CategoryController {
         return categoryService.deleteCategoryByIds(ids);
     }
 
+    @GetMapping("/list")
+    public Result<List<Category>> getCategoryByType(@RequestParam Integer type){
+        return categoryService.getCategoryByType(type);
+    }
 }

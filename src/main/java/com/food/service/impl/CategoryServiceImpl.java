@@ -80,4 +80,15 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         this.removeById(ids);
         return Result.success("ok");
     }
+
+    @Override
+    public Result<List<Category>> getCategoryByType(Integer type) {
+        LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper
+                .eq(type!=null,Category::getType,type)
+                .orderByAsc(Category::getSort)
+                .orderByDesc(Category::getUpdateTime);
+        List<Category> categoryList = this.list(queryWrapper);
+        return Result.success(categoryList);
+    }
 }
