@@ -4,6 +4,8 @@ import com.food.utils.Result;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -21,4 +23,5 @@ public class GlobalExceptionHandler {
     public Result<String> duplicateExceptionHandler(DuplicateException e){
         return Result.fail(e.getMessage());
     }
+
 }

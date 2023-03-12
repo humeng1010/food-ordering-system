@@ -1,20 +1,16 @@
-package com.food.entity;
+package com.food.dto;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.food.entity.SetmealDish;
 import lombok.Data;
-import java.io.Serializable;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
-/**
- * 套餐
- */
 @Data
-public class Setmeal implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    @TableId
+public class SetmealDto {
     private Long id;
 
 
@@ -63,6 +59,9 @@ public class Setmeal implements Serializable {
 
 
     //是否删除
-    @TableLogic(value = "0",delval = "1")
     private Integer isDeleted;
+
+    private List<SetmealDish> setmealDishes;
+
+    private String categoryName;
 }

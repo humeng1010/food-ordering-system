@@ -38,7 +38,7 @@ public class CategoryController {
     }
 
     @GetMapping("/list")
-    public Result<List<Category>> getCategoryByType(@RequestParam Integer type){
+    public Result<List<Category>> getCategoryByType(@RequestParam(required = false) Integer type){
         return categoryService.getCategoryByType(type);
     }
 }

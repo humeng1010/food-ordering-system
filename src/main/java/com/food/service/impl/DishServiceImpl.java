@@ -127,4 +127,12 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         return Result.success("ok");
     }
 
+    @Override
+    public Result<List<Dish>> getDshList(Long categoryId) {
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(categoryId!=null,Dish::getCategoryId,categoryId);
+        List<Dish> dishList = this.list(queryWrapper);
+        return Result.success(dishList);
+    }
+
 }

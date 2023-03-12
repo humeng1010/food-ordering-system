@@ -1,14 +1,14 @@
 package com.food.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.food.dto.SetmealDto;
 import com.food.entity.Setmeal;
 import com.food.service.SetmealService;
 import com.food.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/setmeal")
@@ -22,4 +22,28 @@ public class SetmealController {
 
         return setmealService.getSetmealPageWithCondition(page,pageSize,name);
     }
+
+    @PostMapping
+    public Result<String> saveSetmeal(@RequestBody SetmealDto setmealDto){
+        return setmealService.saveSetmeal(setmealDto);
+
+    }
+
+    @GetMapping("/{id}")
+    public Result<SetmealDto> getSetmealAndDish(@PathVariable Long id){
+        return setmealService.getSetmealAndDish(id);
+    }
+
+    @PutMapping
+    public Result<String> updateSetmealAndSetmealDish(@RequestBody SetmealDto setmealDto){
+        return setmealService.updateSetmealAndSetmealDish(setmealDto);
+    }
+
+    @DeleteMapping
+    public Result<String> logicDeleteSetmalAndSetmealDish(@RequestParam List<Long> ids){
+        return setmealService.logicDeleteSetmalAndSetmealDish(ids);
+    }
+
+
+
 }

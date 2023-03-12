@@ -45,6 +45,13 @@ public class DishController {
         return dishService.getDishWithFlavorByDishId(id);
     }
 
+    @GetMapping("/list")
+    public Result<List<Dish>> getDishList(@RequestParam Long categoryId){
+        return dishService.getDshList(categoryId);
+
+    }
+
+
     @PutMapping
     public Result<String> updateDishOrFlavor(@RequestBody DishDto dishDto){
         return dishService.updateDishOrFlavor(dishDto);
