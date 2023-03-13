@@ -28,4 +28,6 @@ public interface SetmealService extends IService<Setmeal> {
 
     @Transactional
     Result<String> logicDeleteSetmalAndSetmealDish(List<Long> ids);
+
+    Result<String> updateStatusByIds(Integer status, List<Long> ids);
 }

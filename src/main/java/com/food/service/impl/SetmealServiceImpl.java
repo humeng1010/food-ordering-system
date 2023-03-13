@@ -120,4 +120,12 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
 
         return Result.success("ok");
     }
+
+    @Override
+    public Result<String> updateStatusByIds(Integer status, List<Long> ids) {
+        LambdaUpdateWrapper<Setmeal> setmealLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+        setmealLambdaUpdateWrapper.set(Setmeal::getStatus,status).in(Setmeal::getId,ids);
+        this.update(setmealLambdaUpdateWrapper);
+        return Result.success("ok");
+    }
 }
