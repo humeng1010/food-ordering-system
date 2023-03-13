@@ -23,20 +23,27 @@ public class LoginInterceptor implements HandlerInterceptor {
         String requestURI = request.getRequestURI();
         HttpSession session = request.getSession();
 
+//        判断员工是否登陆
         Object empId = session.getAttribute("employee");
-
-        if (Objects.isNull(empId)){
-//            拦截
-            log.info("拦截到的请求:{}",requestURI);
-            //如果没有该session,则需要登陆
-//            response.sendRedirect("/backend/page/login/login.html");
-//            给页面响应没有登陆信息,前端页面自动跳转到登录页
-            response.setContentType("application/json;charset=utf-8");
-            response.getWriter().write(JSON.toJSONString(Result.fail("NOTLOGIN")));
-            return false;
+        if (!Objects.isNull(empId)){
+            //保存到当前线程变量中
+            ThreadLocalUtil.put("employee",empId);
+            return true;
         }
-        //保存到当前线程变量中
-        ThreadLocalUtil.put("employee",empId);
-        return true;
+
+//        判断用户是否登陆
+        Object userId = session.getAttribute("user");
+        if (!Objects.isNull(userId)){
+            //保存到当前线程变量中
+            ThreadLocalUtil.put("user", userId);
+            return true;
+        }
+//            拦截
+        log.info("拦截到的请求:{}",requestURI);
+//            给页面响应没有登陆信息,前端页面自动跳转到登录页
+        response.setContentType("application/json;charset=utf-8");
+        response.getWriter().write(JSON.toJSONString(Result.fail("NOTLOGIN")));
+        return false;
+
     }
 }
