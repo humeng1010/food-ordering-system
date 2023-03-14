@@ -127,12 +127,41 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         return Result.success("ok");
     }
 
+    /**
+     * 获取菜品列表和相应的口味
+     * @param categoryId 种类id
+     * @return 带有相应口味的菜品列表
+     */
     @Override
-    public Result<List<Dish>> getDshList(Long categoryId) {
+    public Result<List<DishDto>> getDishList(Long categoryId) {
+//        根据种类查询菜品列表
         LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(categoryId!=null,Dish::getCategoryId,categoryId);
+        queryWrapper.eq(categoryId!=null,Dish::getCategoryId,categoryId)
+                .orderByAsc(Dish::getSort);
         List<Dish> dishList = this.list(queryWrapper);
-        return Result.success(dishList);
+//        根据id获取菜品种类
+        Category category = categoryService.getById(categoryId);
+
+
+//        遍历菜品
+        List<DishDto> dtoList = dishList.stream().map(dish -> {
+            DishDto dishDto = new DishDto();
+            BeanUtils.copyProperties(dish, dishDto);
+//            种类名称保存到DishDto中
+            dishDto.setCategoryName(category.getName());
+//            查询菜品口味
+            Long dishId = dish.getId();
+            LambdaQueryWrapper<DishFlavor> dishFlavorLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            dishFlavorLambdaQueryWrapper.eq(DishFlavor::getDishId, dishId);
+            List<DishFlavor> dishFlavors = dishFlavorService.list(dishFlavorLambdaQueryWrapper);
+//            保存菜品口味到dishDto
+            dishDto.setFlavors(dishFlavors);
+
+            return dishDto;
+
+        }).collect(Collectors.toList());
+
+        return Result.success(dtoList);
     }
 
 }

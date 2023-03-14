@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -127,5 +126,14 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
         setmealLambdaUpdateWrapper.set(Setmeal::getStatus,status).in(Setmeal::getId,ids);
         this.update(setmealLambdaUpdateWrapper);
         return Result.success("ok");
+    }
+
+    @Override
+    public Result<List<Setmeal>> getSetmealByCategoryId(Long categoryId, Integer status) {
+        LambdaQueryWrapper<Setmeal> setmealLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        setmealLambdaQueryWrapper.eq(Setmeal::getCategoryId,categoryId)
+                .eq(Setmeal::getStatus,status);
+        List<Setmeal> setmealList = this.list(setmealLambdaQueryWrapper);
+        return Result.success(setmealList);
     }
 }

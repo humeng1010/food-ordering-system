@@ -1,6 +1,5 @@
 package com.food.controller;
 
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.food.dto.DishDto;
 import com.food.entity.Dish;
@@ -46,8 +45,8 @@ public class DishController {
     }
 
     @GetMapping("/list")
-    public Result<List<Dish>> getDishList(@RequestParam Long categoryId){
-        return dishService.getDshList(categoryId);
+    public Result<List<DishDto>> getDishList(@RequestParam Long categoryId){
+        return dishService.getDishList(categoryId);
 
     }
 
