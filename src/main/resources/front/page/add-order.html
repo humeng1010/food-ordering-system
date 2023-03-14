@@ -125,11 +125,11 @@
                         }
                     },
                     goodsPrice(){
-                    let price = 0
-                    this.cartData.forEach(item=>{
-                        price += (item.number * item.amount)
-                    })
-                    return price
+                        let price = 0
+                        this.cartData.forEach(item=>{
+                            price += (item.number * item.amount)
+                        })
+                        return price
                     }
                 },
                 created(){
@@ -173,7 +173,7 @@
                     },
                     toAddressPage(){
                         window.requestAnimationFrame(()=>{
-                            window.location.href = '/front/page/address.html'
+                            window.location.replace('/front/page/address.html')
                         })
                     },
                     //获取购物车数据
@@ -189,7 +189,8 @@
                         const params = {
                             remark:this.note,
                             payMethod:1,
-                            addressBookId:this.address.id
+                            addressBookId:this.address.id,
+                            amount: this.goodsPrice
                         }
                         const res = await addOrderApi(params)
                         if(res.code === 1){

@@ -49,4 +49,12 @@ public class AddressBookController {
         return Result.success(addressBookList);
     }
 
+    @GetMapping("/default")
+    public Result<AddressBook> getDefaultAddress(){
+        LambdaQueryWrapper<AddressBook> addressBookLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        addressBookLambdaQueryWrapper.eq(AddressBook::getIsDefault,1).eq(AddressBook::getUserId,ThreadLocalUtil.get("user"));
+        AddressBook addressBook = addressBookService.getOne(addressBookLambdaQueryWrapper);
+        return Result.success(addressBook);
+    }
+
 }
