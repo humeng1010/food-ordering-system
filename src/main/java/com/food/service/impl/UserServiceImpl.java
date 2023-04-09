@@ -6,6 +6,7 @@ import com.food.dto.UserDto;
 import com.food.entity.User;
 import com.food.mapper.UserMapper;
 import com.food.service.UserService;
+import com.food.utils.RedisConstants;
 import com.food.utils.Result;
 import com.food.utils.ValidateCodeUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +33,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         log.info("code={}",validateCode);
 
         ValueOperations<String, String> stringStringValueOperations = stringRedisTemplate.opsForValue();
-        stringStringValueOperations.set(phone,validateCode.toString(),5, TimeUnit.MINUTES);
+        stringStringValueOperations.set(RedisConstants.FOOD_USER_CODE+phone,validateCode.toString(),5, TimeUnit.MINUTES);
 
         return Result.success("验证码发送成功,将于5分钟之后过期");
     }
@@ -42,10 +43,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String phone = userDto.getPhone();
         String inputCode = userDto.getCode();
         ValueOperations<String, String> stringStringValueOperations = stringRedisTemplate.opsForValue();
-        String code = stringStringValueOperations.get(phone);
+        String code = stringStringValueOperations.get(RedisConstants.FOOD_USER_CODE+phone);
         if (!Objects.equals(inputCode,code)){
             return Result.fail("验证码错误");
         }
+//        验证码正确,就删除当前手机号对应的验证码
+        stringRedisTemplate.delete(RedisConstants.FOOD_USER_CODE+phone);
         LambdaQueryWrapper<User> userLambdaQueryWrapper = new LambdaQueryWrapper<>();
         userLambdaQueryWrapper.eq(StringUtils.hasText(userDto.getPhone()),User::getPhone,userDto.getPhone());
         User user = this.getOne(userLambdaQueryWrapper);
