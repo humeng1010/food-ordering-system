@@ -12,10 +12,13 @@ import com.food.exception.DuplicateException;
 import com.food.mapper.SetmealDishMapper;
 import com.food.mapper.SetmealMapper;
 import com.food.service.SetmealService;
+import com.food.utils.RedisConstants;
 import com.food.utils.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -40,6 +43,10 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
     @Autowired
     private SetmealDishMapper setmealDishMapper;
     @Override
+//    allEntries = true要删除该分类下的所有数据,
+//    由于我们通过该方法只能获得ids不能更加细粒度的控制具体清除哪一个套餐的种类,
+//    所以需要删除该分类的所有数据
+    @CacheEvict(value = RedisConstants.SETMEAL,allEntries = true)
     public Result<String> saveSetmeal(SetmealDto setmealDto) {
         isSetmealNameRepeat(setmealDto);
 
@@ -87,6 +94,10 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
     }
 
     @Override
+//    allEntries = true要删除该分类下的所有数据,
+//    由于我们通过该方法只能获得ids不能更加细粒度的控制具体清除哪一个套餐的种类,
+//    所以需要删除该分类的所有数据
+    @CacheEvict(value = RedisConstants.SETMEAL,allEntries = true)
     public Result<String> updateSetmealAndSetmealDish(SetmealDto setmealDto) {
 
         Setmeal setmeal = new Setmeal();
@@ -96,7 +107,7 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
         Long setmealId = setmeal.getId();
         LambdaUpdateWrapper<SetmealDish> setmealDishLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
         setmealDishLambdaUpdateWrapper.eq(SetmealDish::getSetmealId,setmealId);
-//        TODO 优化:使用ServiceImpl的批量删除
+
         setmealDishMapper.delete(setmealDishLambdaUpdateWrapper);
 
         List<SetmealDish> setmealDishes = setmealDto.getSetmealDishes();
@@ -108,6 +119,10 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
     }
 
     @Override
+//    allEntries = true要删除该分类下的所有数据,
+//    由于我们通过该方法只能获得ids不能更加细粒度的控制具体清除哪一个套餐的种类,
+//    所以需要删除该分类的所有数据
+    @CacheEvict(value = RedisConstants.SETMEAL,allEntries = true)
     public Result<String> logicDeleteSetmalAndSetmealDish(List<Long> ids) {
 //      删除套餐
         this.removeByIds(ids);
@@ -129,6 +144,7 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
     }
 
     @Override
+    @Cacheable(value = RedisConstants.SETMEAL,key = "#categoryId.toString()")
     public Result<List<Setmeal>> getSetmealByCategoryId(Long categoryId, Integer status) {
         LambdaQueryWrapper<Setmeal> setmealLambdaQueryWrapper = new LambdaQueryWrapper<>();
         setmealLambdaQueryWrapper.eq(Setmeal::getCategoryId,categoryId)

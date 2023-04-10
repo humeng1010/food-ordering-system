@@ -24,7 +24,9 @@ spring:
         max-idle: 8
         max-wait: 100
         min-idle: 0
-
+  cache:
+    redis:
+      time-to-live: 1800000 # set default fixed expire time is 30 min
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true

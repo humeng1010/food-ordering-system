@@ -55,7 +55,5 @@ public class SetmealController {
     public Result<List<Setmeal>> getSetmealByCategoryId(@RequestParam Long categoryId,@RequestParam Integer status){
         return setmealService.getSetmealByCategoryId(categoryId,status);
     }
-//    @GetMapping("/dish/{id}")
-//    public Result()
 
 }

@@ -11,6 +11,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public Result<String> exceptionHandler(Exception e){
+        e.printStackTrace();
         return Result.fail("业务异常:"+e.getMessage());
     }
 
