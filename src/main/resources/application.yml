@@ -52,6 +52,9 @@ spring:
   cache:
     redis:
       time-to-live: 1800000 # set default fixed expire time is 30 min
+#  mvc:
+#    pathmatch:
+#      matching-strategy: ant_path_matcher # 解决springboot版本高导致swagger框架启动报空指针
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
@@ -66,3 +69,23 @@ mybatis-plus:
 
 upload-img:
   path: "/Users/humeng/img/"
+
+knife4j:
+  enable: true
+  openapi:
+    title: Knife4j官方文档
+#    description: "`我是测试`,**你知道吗**
+    # aaa"
+#    email: xiaoymin@foxmail.com
+#    concat: 八一菜刀
+#    url: https://docs.xiaominfo.com
+    version: v4.0
+    license: Apache 2.0
+#    license-url: https://stackoverflow.com/
+#    terms-of-service-url: https://stackoverflow.com/
+    group:
+      test1:
+        group-name: 分组名称
+        api-rule: package
+        api-rule-resources:
+          - com.food.controller
