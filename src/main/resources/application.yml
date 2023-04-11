@@ -1,6 +1,31 @@
 server:
   port: 8080
 spring:
+#  shardingsphere: # 数据库的读写分离基于数据库的主从复制
+#    datasource:
+#      names:
+#        master,slave #数据源的名称
+#      master: # 主库
+#        type: com.alibaba.druid.pool.DruidDataSource
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        url: jdbc:mysql://192.168.138.100/reggie?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+#        username: root
+#        password: 12345678
+#      slave: # 从库
+#        type: com.alibaba.druid.pool.DruidDataSource
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        url: jdbc:mysql://192.168.138.101/reggie?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+#        username: root
+#        password: 12345678
+#    masterslave:
+#      load-balance-algorithm-type: round_robin # 从库的查询负载均衡策略:轮询
+#      master-data-source-name: master
+#      slave-data-source-names: slave
+#      name: dataSource
+#    props:
+#      sql:
+#        show: true # 开启SQL显示,在控制台输出SQL
+
   datasource:
     druid:
 #    type: com.alibaba.druid.pool.DruidDataSource

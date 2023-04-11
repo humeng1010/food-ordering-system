@@ -14,6 +14,10 @@
     <name>food-ordering</name>
     <description>food-ordering</description>
 
+    <properties>
+        <mysql.version>8.0.28</mysql.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -41,7 +45,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.28</version>
+            <version>${mysql.version}</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -49,6 +53,12 @@
             <version>1.2.8</version>
         </dependency>
 
+<!--        处理数据库的读写分离的数据库连接驱动-->
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+            <version>4.0.0-RC1</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
